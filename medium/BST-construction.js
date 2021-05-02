@@ -37,6 +37,25 @@ class BST {
   
     contains(value) {
       // Write your code here.
+      let found = false;
+      let pointer = this
+      
+      while(!found) {
+          if(pointer === null) {
+              return false
+          } else if(value === pointer.value || pointer.left === value || pointer.right === value) {
+              found = true
+              return true
+          } else {
+              //Check where to move pointer (left or right)
+              if(value < pointer.value) {
+                  pointer = pointer.left
+              } else if (value >= pointer.value) {
+                  pointer = pointer.right
+              }
+          }
+      }
+
           return this;
     }
   
@@ -57,3 +76,5 @@ class BST {
   myBST.insert(15)
   myBST.insert(6)
   console.log(myBST.left)
+
+  console.log(myBST.contains(15))
