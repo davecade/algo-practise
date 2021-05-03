@@ -71,43 +71,54 @@ class BST {
         if(this.contains(value)===true) {
             //find the node
             while(!finished) {
-                if(pointer === null) {
-                    finished = true;
-                } else if(value === pointer.value) {
+                if(value === pointer.value) {
                     finished = true;
                     targetfound = true;
-                    target = pointer;
-                } else if (value === pointer.left) {
-                    finished = true;
-                    targetfound = true;
-                    pointer = pointer.left
-                    target = pointer;
-                } else if (value === pointer.right) {
-                    finished = true;
-                    targetfound = true;
-                    pointer = pointer.right
                     target = pointer;
                 } else {
-                    //Not found, so check where to move pointer
-                    //check if left and right is null or not
-                    if(value < pointer.value) {
-                        pointer = pointer.left
-                    } else if (value >= pointer.value) {
-                        pointer = pointer.right
-                    }
-                }
+                                  if (pointer.left) {							
+                                      if(value === pointer.left.value) {
+                                          finished = true;
+                                          targetfound = true;
+                                          pointer = pointer.left
+                                          target = pointer;
+                                      }
+                                  }
+                                  
+                                  if (pointer.right) {							
+                                      if(value === pointer.right.value) {
+                                          finished = true;
+                                          targetfound = true;
+                                          pointer = pointer.right
+                                          target = pointer;
+                                      }
+                                  }
+                              }
+  
+                              //Not found, so check where to move pointer
+                              //check if left and right is null or not
+                              if(!targetfound) {
+                                  if(value < pointer.value) {
+                                          pointer = pointer.left
+                                  } else if (value >= pointer.value) {
+                                          pointer = pointer.right
+                                  }
+                              }
             }
         }
         
         //If found, find the lowest number on the right side
-        if(targetfound === true) {
+              let parent
+        if(targetfound) {
                       if(target.right) {
                           pointer = target.right;
                       } else if(target.left) {
                           pointer = target.left;
+                          lowestFound = true
+                          lowest = pointer
                       } else {
                           lowestFound = true
-                          target = pointer
+                          lowest = pointer
                       }
             
             while(!lowestFound) {
@@ -116,8 +127,10 @@ class BST {
                     lowest = pointer
                 } else {
                     if(pointer.left) {
+                                              parent = pointer
                         pointer = pointer.left
                     } else {
+                                              parent = pointer
                         pointer = pointer.right
                     }
                 }
@@ -125,18 +138,49 @@ class BST {
         }
           
           //Once lowest is found, delete target, and add lowest in its place
-          if(lowestFound === true) {
-              if(target.value !== lowest.value) {
-                  //insert lowest in place of target
-                  target.value = lowest.value
-                  //delete target
+          let reshuffled = false
+          let newTargetVal = lowest.value
+          let shuffleVal
+          if(lowestFound) {
+                  //check all children on the right
+                  pointer = lowest
                   lowest = null
-              } else {
-                  target = null
-              }
+                  while(!reshuffled) {
+                      if(pointer.left === null && pointer.right === null) {
+                          console.log("RESHUFF")
+                          console.log("REMOVED: ", pointer)
+                          pointer = null
+                          console.log("AFTER POINTER CHANGED", pointer)
+                          console.log("lowest: ", lowest)
+                          reshuffled = true
+                          console.log("Parent!!:: ", parent)
+                          if(parent.left) {
+                              parent.left = null
+                          }
+                      } else {
+                          console.log("HAS CHILD: ", pointer)
+                          if(pointer.right) {
+                              shuffleVal = pointer.right.value
+                              pointer.right.value = null
+                              pointer.value = shuffleVal
+                              parent = pointer
+                              pointer = pointer.right
+                          } else if (pointer.left) {
+                              shuffleVal = pointer.left.value
+                              pointer.left.value = null
+                              pointer.value = shuffleVal
+                              parent = pointer
+                              pointer = pointer.left
+                          }
+                      }
+                  }
+              target.value = newTargetVal
+                  
           }
+          
       return this;
     }
+      
   }
 
   const myBST = new BST(10)
