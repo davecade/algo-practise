@@ -66,7 +66,8 @@ class BST {
           let pointer = this
           let target = this
           let lowest = this
-  
+          let parent
+          let direction
           
         if(this.contains(value)===true) {
             //find the node
@@ -80,8 +81,10 @@ class BST {
                                       if(value === pointer.left.value) {
                                           finished = true;
                                           targetfound = true;
+                                          parent = pointer
                                           pointer = pointer.left
                                           target = pointer;
+                                          direction = "left"
                                       }
                                   }
                                   
@@ -89,8 +92,10 @@ class BST {
                                       if(value === pointer.right.value) {
                                           finished = true;
                                           targetfound = true;
+                                          parent = pointer
                                           pointer = pointer.right
                                           target = pointer;
+                                          direction = "right"
                                       }
                                   }
                               }
@@ -108,17 +113,34 @@ class BST {
         }
         
         //If found, find the lowest number on the right side
-              let parent
+              let needToDelete = true
         if(targetfound) {
                       if(target.right) {
+                          direction = "right"
+                          parent = pointer
                           pointer = target.right;
                       } else if(target.left) {
+                          direction==="left"
+                          parent = pointer
                           pointer = target.left;
                           lowestFound = true
                           lowest = pointer
                       } else {
+                          console.log("VAL: :", value)
+                          console.log("NO CHILDREN")
+                          target = null
+                          pointer = null
+                          lowest = null
                           lowestFound = true
-                          lowest = pointer
+                          needToDelete = false
+                          console.log("THIS IS THE PARENT: ", parent)
+                          if(direction==="left" && parent.left) {
+                              parent.left = null
+                              console.log("DIRECTION LEFT")
+                          } else if(direction === "right" && parent.right) {
+                              parent.right = null
+                              console.log("DIRECTION RIGHT")
+                          }
                       }
             
             while(!lowestFound) {
@@ -128,9 +150,11 @@ class BST {
                 } else {
                     if(pointer.left) {
                                               parent = pointer
+                                              direction = "left"
                         pointer = pointer.left
                     } else {
                                               parent = pointer
+                                              direction = "right"
                         pointer = pointer.right
                     }
                 }
@@ -138,45 +162,30 @@ class BST {
         }
           
           //Once lowest is found, delete target, and add lowest in its place
-          let reshuffled = false
-          let newTargetVal = lowest.value
-          let shuffleVal
-          if(lowestFound) {
-                  //check all children on the right
-                  pointer = lowest
-                  lowest = null
-                  while(!reshuffled) {
-                      if(pointer.left === null && pointer.right === null) {
-                          console.log("RESHUFF")
-                          console.log("REMOVED: ", pointer)
-                          pointer = null
-                          console.log("AFTER POINTER CHANGED", pointer)
-                          console.log("lowest: ", lowest)
-                          reshuffled = true
-                          console.log("Parent!!:: ", parent)
-                          if(parent.left) {
-                              parent.left = null
-                          }
-                      } else {
-                          console.log("HAS CHILD: ", pointer)
-                          if(pointer.right) {
-                              shuffleVal = pointer.right.value
-                              pointer.right.value = null
-                              pointer.value = shuffleVal
-                              parent = pointer
-                              pointer = pointer.right
-                          } else if (pointer.left) {
-                              shuffleVal = pointer.left.value
-                              pointer.left.value = null
-                              pointer.value = shuffleVal
-                              parent = pointer
-                              pointer = pointer.left
-                          }
-                      }
+          
+          if(needToDelete === true) {
+                  let newTargetVal = lowest.value
+                  console.log("PARENT: ", parent)
+                  console.log("newTargetVal", newTargetVal)
+                  if(lowest.left || lowest.right) {
+                      console.log("LOWEST FOUND KIDS!!", lowest)
+                      lowest.remove(newTargetVal)
                   }
-              target.value = newTargetVal
-                  
+  
+                  console.log("DIRECTION: ", direction)
+                  if(direction==="left" && parent.left) {
+                      parent.left = null
+                      console.log("DIRECTION LEFT")
+                  } else if(direction === "right" && parent.right) {
+                      parent.right = null
+                      console.log("DIRECTION RIGHT")
+                  }
+                  pointer = null
+                  lowest = null
+                  target.value = newTargetVal
           }
+  
+  
           
       return this;
     }
