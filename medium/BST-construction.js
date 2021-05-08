@@ -77,43 +77,43 @@ class BST {
                     targetfound = true;
                     target = pointer;
                 } else {
-                                  if (pointer.left) {							
-                                      if(value === pointer.left.value) {
-                                          finished = true;
-                                          targetfound = true;
-                                          parent = pointer
-                                          pointer = pointer.left
-                                          target = pointer;
-                                          direction = "left"
-                                      }
-                                  }
-                                  
-                                  if (pointer.right) {							
-                                      if(value === pointer.right.value) {
-                                          finished = true;
-                                          targetfound = true;
-                                          parent = pointer
-                                          pointer = pointer.right
-                                          target = pointer;
-                                          direction = "right"
-                                      }
-                                  }
-                              }
-  
-                              //Not found, so check where to move pointer
-                              //check if left and right is null or not
-                              if(!targetfound) {
-                                  if(value < pointer.value) {
-                                          pointer = pointer.left
-                                  } else if (value >= pointer.value) {
-                                          pointer = pointer.right
-                                  }
-                              }
+                    if (pointer.left) {							
+                        if(value === pointer.left.value) {
+                            finished = true;
+                            targetfound = true;
+                            parent = pointer
+                            pointer = pointer.left
+                            target = pointer;
+                            direction = "left"
+                        }
+                    }
+                    
+                    if (pointer.right) {							
+                        if(value === pointer.right.value) {
+                            finished = true;
+                            targetfound = true;
+                            parent = pointer
+                            pointer = pointer.right
+                            target = pointer;
+                            direction = "right"
+                        }
+                    }
+                }
+
+                //Not found, so check where to move pointer
+                //check if left and right is null or not
+                if(!targetfound) {
+                    if(value < pointer.value) {
+                            pointer = pointer.left
+                    } else if (value >= pointer.value) {
+                            pointer = pointer.right
+                    }
+                }
             }
         }
         
         //If found, find the lowest number on the right side
-              let needToDelete = true
+        let needToDelete = true
         if(targetfound) {
                       if(target.right) {
                           direction = "right"
