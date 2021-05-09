@@ -5,7 +5,7 @@ const user = {
     purchases: []
 }
 
-const compose = (f, g) => (...args) => f(g(...args))
+// -- const compose = (f, g) => (...args) => f(g(...args))
 
 
 let result = purchaseItem(
@@ -16,7 +16,11 @@ let result = purchaseItem(
 )(user, {name: 'laptop', price: 200})
 
 function purchaseItem(...fns){
-    return fns.reduce(compose)
+    return fns.reduce((f, g) => {
+        return (...args) => {
+            return f(g(...args))
+        }
+    })
 }
 
 function addItemToCart(user, item){
@@ -52,3 +56,4 @@ function emptyCart(user, item){
 //-- 4. Empty cart
 
 console.log(result)
+console.log(user)
