@@ -77,48 +77,49 @@ class BST {
                     targetfound = true;
                     target = pointer;
                 } else {
-                    if (pointer.left) {							
-                        if(value === pointer.left.value) {
-                            finished = true;
-                            targetfound = true;
-                            parent = pointer
-                            pointer = pointer.left
-                            target = pointer;
-                            direction = "left"
-                        }
-                    }
-                    
-                    if (pointer.right) {							
-                        if(value === pointer.right.value) {
-                            finished = true;
-                            targetfound = true;
-                            parent = pointer
-                            pointer = pointer.right
-                            target = pointer;
-                            direction = "right"
-                        }
-                    }
-                }
-
-                //Not found, so check where to move pointer
-                //check if left and right is null or not
-                if(!targetfound) {
-                    if(value < pointer.value) {
-                            pointer = pointer.left
-                    } else if (value >= pointer.value) {
-                            pointer = pointer.right
-                    }
-                }
+                                  if (pointer.left) {							
+                                      if(value === pointer.left.value) {
+                                          finished = true;
+                                          targetfound = true;
+                                          parent = pointer
+                                          pointer = pointer.left
+                                          target = pointer;
+                                          direction = "left"
+                                      }
+                                  }
+                                  
+                                  if (pointer.right) {							
+                                      if(value === pointer.right.value) {
+                                          finished = true;
+                                          targetfound = true;
+                                          parent = pointer
+                                          pointer = pointer.right
+                                          target = pointer;
+                                          direction = "right"
+                                      }
+                                  }
+                              }
+  
+                              //Not found, so check where to move pointer
+                              //check if left and right is null or not
+                              if(!targetfound) {
+                                  if(value < pointer.value) {
+                                          pointer = pointer.left
+                                  } else if (value >= pointer.value) {
+                                          pointer = pointer.right
+                                  }
+                              }
             }
         }
         
         //If found, find the lowest number on the right side
-        let needToDelete = true
+              let needToDelete = true
         if(targetfound) {
                       if(target.right) {
                           direction = "right"
                           parent = pointer
                           pointer = target.right;
+                          lowest = pointer
                       } else if(target.left) {
                           direction==="left"
                           parent = pointer
@@ -126,7 +127,6 @@ class BST {
                           lowestFound = true
                           lowest = pointer
                       } else {
-                          console.log("VAL: :", value)
                           console.log("NO CHILDREN")
                           target = null
                           pointer = null
@@ -136,17 +136,17 @@ class BST {
                           console.log("THIS IS THE PARENT: ", parent)
                           if(direction==="left" && parent.left) {
                               parent.left = null
-                              console.log("DIRECTION LEFT")
                           } else if(direction === "right" && parent.right) {
                               parent.right = null
-                              console.log("DIRECTION RIGHT")
                           }
                       }
             
             while(!lowestFound) {
                 if(pointer.left === null && pointer.right === null) {
                     lowestFound = true
-                    lowest = pointer
+                                      if(pointer.value < lowest.value) {
+                                          lowest = pointer
+                                      }
                 } else {
                     if(pointer.left) {
                                               parent = pointer
@@ -162,16 +162,18 @@ class BST {
         }
           
           //Once lowest is found, delete target, and add lowest in its place
-          
+          let newTargetVal
           if(needToDelete === true) {
-                  let newTargetVal = lowest.value
-                  console.log("PARENT: ", parent)
+                  newTargetVal = lowest.value
+                  console.log("PARENT: ", parent, lowest)
                   console.log("newTargetVal", newTargetVal)
                   if(lowest.left || lowest.right) {
                       console.log("LOWEST FOUND KIDS!!", lowest)
                       lowest.remove(newTargetVal)
                   }
-  
+              
+                  target.value = newTargetVal
+              
                   console.log("DIRECTION: ", direction)
                   if(direction==="left" && parent.left) {
                       parent.left = null
@@ -180,9 +182,10 @@ class BST {
                       parent.right = null
                       console.log("DIRECTION RIGHT")
                   }
+              
                   pointer = null
                   lowest = null
-                  target.value = newTargetVal
+  
           }
   
   
