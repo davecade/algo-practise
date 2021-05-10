@@ -114,6 +114,7 @@ class BST {
         
         //If found, find the lowest number on the right side
               let needToDelete = true
+              let lowestVal
         if(targetfound) {
                       if(target.right) {
                           direction = "right"
@@ -121,10 +122,9 @@ class BST {
                           pointer = target.right;
                           lowest = pointer
                       } else if(target.left) {
-                          direction==="left"
+                          direction ="left"
                           parent = pointer
                           pointer = target.left;
-                          lowestFound = true
                           lowest = pointer
                       } else {
                           console.log("NO CHILDREN")
@@ -144,7 +144,7 @@ class BST {
             while(!lowestFound) {
                 if(pointer.left === null && pointer.right === null) {
                     lowestFound = true
-                                      if(pointer.value < lowest.value) {
+                                      if((pointer.value < lowest.value)) {
                                           lowest = pointer
                                       }
                 } else {
@@ -152,7 +152,7 @@ class BST {
                                               parent = pointer
                                               direction = "left"
                         pointer = pointer.left
-                    } else {
+                    } else if(pointer.right) {
                                               parent = pointer
                                               direction = "right"
                         pointer = pointer.right
