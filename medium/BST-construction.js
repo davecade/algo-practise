@@ -68,9 +68,10 @@ class BST {
           let lowest = this
           let parent
           let direction
-          
+              
+              //Check if node exists, otherwise dont even bother looking
         if(this.contains(value)===true) {
-            //find the node
+            //If exists, find the node
             while(!finished) {
                 if(value === pointer.value) {
                     finished = true;
@@ -100,8 +101,7 @@ class BST {
                                   }
                               }
   
-                              //Not found, so check where to move pointer
-                              //check if left and right is null or not
+                              //Not found yet, so check where to move pointer to continue searching
                               if(!targetfound) {
                                   if(value < pointer.value) {
                                           pointer = pointer.left
@@ -112,28 +112,40 @@ class BST {
             }
         }
         
-        //If found, find the lowest number on the right side
-              let needToDelete = true
-              let lowestVal
+        //If delete target is found, find the lowest number on the right side
+              let lowestNodeHasChildren = false // by Default set to false until we find lowest node
+              
+              //If right side exists, then must find lowest on right side.
+              //But if right side doesnt exists, then dont need to find lowest node anymore
+              //Lowest node will be the direct left node
+              let mustFindLowestVal
         if(targetfound) {
                       if(target.right) {
                           direction = "right"
                           parent = pointer
                           pointer = target.right;
                           lowest = pointer
+                          
+                          // Must find lowest value because right side exists
+                          mustFindLowestVal = true;
                       } else if(target.left) {
                           direction ="left"
                           parent = pointer
                           pointer = target.left;
                           lowest = pointer
+                          
+                          // No need to find lowest on left side.
+                          // Lowest is lower than target value, so lowest will be left node
+                          mustFindLowestVal = false;
                       } else {
-                          console.log("NO CHILDREN")
                           target = null
                           pointer = null
                           lowest = null
                           lowestFound = true
-                          needToDelete = false
-                          console.log("THIS IS THE PARENT: ", parent)
+                          
+                          //-- Dont need to rearange children because the lowest node has no children
+                          lowestNodeHasChildren = true
+                          
                           if(direction==="left" && parent.left) {
                               parent.left = null
                           } else if(direction === "right" && parent.right) {
@@ -144,9 +156,13 @@ class BST {
             while(!lowestFound) {
                 if(pointer.left === null && pointer.right === null) {
                     lowestFound = true
-                                      if((pointer.value < lowest.value)) {
+                                  
+                                      //if mustFindLowestVal === true, then set lowest to pointer
+                                      //if mustFindLowestVal === false, then no need to set lowest to pointer. We already have lowest value
+                                      if((pointer.value < lowest.value) && mustFindLowestVal) {
                                           lowest = pointer
                                       }
+                              
                 } else {
                     if(pointer.left) {
                                               parent = pointer
@@ -163,32 +179,22 @@ class BST {
           
           //Once lowest is found, delete target, and add lowest in its place
           let newTargetVal
-          if(needToDelete === true) {
+          if(lowestNodeHasChildren === false) {
                   newTargetVal = lowest.value
-                  console.log("PARENT: ", parent, lowest)
-                  console.log("newTargetVal", newTargetVal)
                   if(lowest.left || lowest.right) {
-                      console.log("LOWEST FOUND KIDS!!", lowest)
                       lowest.remove(newTargetVal)
                   }
-              
                   target.value = newTargetVal
               
-                  console.log("DIRECTION: ", direction)
                   if(direction==="left" && parent.left) {
                       parent.left = null
-                      console.log("DIRECTION LEFT")
                   } else if(direction === "right" && parent.right) {
                       parent.right = null
-                      console.log("DIRECTION RIGHT")
                   }
               
                   pointer = null
                   lowest = null
-  
           }
-  
-  
           
       return this;
     }
