@@ -22,9 +22,7 @@ function generateDocument(characters, document) {
 			docUniqueArray.push(doc[i])
 		}
 	}
-	
-	console.log(charUnique)
-	console.log(docUnique)
+
 	
 	for(let item of docUniqueArray) {
 		if(charUnique[item] >= docUnique[item]) {
