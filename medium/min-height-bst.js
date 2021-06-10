@@ -1,7 +1,12 @@
 function minHeightBst(array) {
   // Write your code here.
-	let middle = array[Math.floor(array.length/2)]
+	let middleIdx = Math.floor(array.length/2)
+	let middleVal = array[middleIdx]
 	
+	let newBST = new BST
+	newBST.left = minHeightBst(array.slice(0,middleIdx))
+	newBST.right = minHeightBst(array.slice(middleIdx,array.length-1))
+	return neBwST
 }
 
 class BST {
