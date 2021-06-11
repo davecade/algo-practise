@@ -1,11 +1,10 @@
 function minHeightBst(array) {
   // Write your code here.
-	let myBST = new BST
 	let finalArray = createFinalArray(array);
-	console.log("FINAL: ", finalArray)
+	let myBST = new BST(finalArray[0])
 	
-	for(let value of finalArray) {
-		myBST.insert(value)
+	for(let i=1; i<finalArray.length; i++) {
+		myBST.insert(finalArray[i])
 	}
 	
 	return myBST;
@@ -26,14 +25,13 @@ function createFinalArray(array, result=[]) {
 			}
 
 			middleVal = array[middleIdx]
-			result.push(middleVal)
-		
-			console.log("middle: ", middleVal)
+			if(middleVal) {
+				result.push(middleVal)
+			}
+			
 			leftArray = array.slice(0,middleIdx)
 			rightArray = array.slice(middleIdx+1,array.length)
 
-			console.log("leftArr: ", leftArray)
-			console.log("rightArr: ", rightArray)
 
 			if(leftArray.length>0) {
 				createFinalArray(leftArray, result)
@@ -45,4 +43,28 @@ function createFinalArray(array, result=[]) {
 	}
 	
 	return result
+}
+
+class BST {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+
+  insert(value) {
+    if (value < this.value) {
+      if (this.left === null) {
+        this.left = new BST(value);
+      } else {
+        this.left.insert(value);
+      }
+    } else {
+      if (this.right === null) {
+        this.right = new BST(value);
+      } else {
+        this.right.insert(value);
+      }
+    }
+  }
 }
