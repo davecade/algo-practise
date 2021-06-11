@@ -1,34 +1,44 @@
-function minHeightBst(array) {
+function minHeightBst(array, root=null) {
   // Write your code here.
-	let middleIdx = Math.floor(array.length/2)
-	let middleVal = array[middleIdx]
+	let middleIdx
+	let leftArray
+	let rightArray
 	
+	if(array.length%2 === 0) {
+		middleIdx = Math.floor(array.length/2)-1
+	} else {
+		middleIdx = Math.floor(array.length/2)
+	}
+	
+	let middleVal = array[middleIdx]
 	let newBST = new BST
-	newBST.left = minHeightBst(array.slice(0,middleIdx))
-	newBST.right = minHeightBst(array.slice(middleIdx,array.length-1))
-	return neBwST
-}
+	newBST.value = middleVal
+	if(root===null) {
+		root = newBST
+	}
+	
+	console.log("middle: ", middleVal)
+	leftArray = array.slice(0,middleIdx)
+	rightArray = array.slice(middleIdx+1,array.length)
+	
+	if(array.length===1) {
+		newBST.value = array[0]
+	} else {
+		console.log("leftA: ", array.slice(0,middleIdx))
+		console.log("rightA: ", array.slice(middleIdx+1,array.length))
+		newBST.value = middleVal
+		
+		if(leftArray.length>0){
+			root.insert(minHeightBst(array.slice(0,middleIdx), root).value)
+			return
+		}
+		
+		if(rightArray.length>0){
+			root.insert(minHeightBst(array.slice(middleIdx+1,array.length), root).value)
+			return
+		}
+	}
 
-class BST {
-  constructor(value) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
-  }
-
-  insert(value) {
-    if (value < this.value) {
-      if (this.left === null) {
-        this.left = new BST(value);
-      } else {
-        this.left.insert(value);
-      }
-    } else {
-      if (this.right === null) {
-        this.right = new BST(value);
-      } else {
-        this.right.insert(value);
-      }
-    }
-  }
+	console.log("Returning: ", newBST.value)
+	return newBST
 }
