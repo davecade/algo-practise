@@ -1,44 +1,48 @@
-function minHeightBst(array, root=null) {
+function minHeightBst(array) {
   // Write your code here.
-	let middleIdx
-	let leftArray
-	let rightArray
+	let myBST = new BST
+	let finalArray = createFinalArray(array);
+	console.log("FINAL: ", finalArray)
 	
-	if(array.length%2 === 0) {
-		middleIdx = Math.floor(array.length/2)-1
-	} else {
-		middleIdx = Math.floor(array.length/2)
+	for(let value of finalArray) {
+		myBST.insert(value)
 	}
 	
-	let middleVal = array[middleIdx]
-	let newBST = new BST
-	newBST.value = middleVal
-	if(root===null) {
-		root = newBST
-	}
-	
-	console.log("middle: ", middleVal)
-	leftArray = array.slice(0,middleIdx)
-	rightArray = array.slice(middleIdx+1,array.length)
-	
-	if(array.length===1) {
-		newBST.value = array[0]
-	} else {
-		console.log("leftA: ", array.slice(0,middleIdx))
-		console.log("rightA: ", array.slice(middleIdx+1,array.length))
-		newBST.value = middleVal
-		
-		if(leftArray.length>0){
-			root.insert(minHeightBst(array.slice(0,middleIdx), root).value)
-			return
-		}
-		
-		if(rightArray.length>0){
-			root.insert(minHeightBst(array.slice(middleIdx+1,array.length), root).value)
-			return
-		}
-	}
+	return myBST;
+}
 
-	console.log("Returning: ", newBST.value)
-	return newBST
+function createFinalArray(array, result=[]) {
+	
+	if(array.length>0) {
+			let middleIdx
+			let leftArray
+			let rightArray
+			let middleVal
+			
+			if(array.length%2 === 0) {
+				middleIdx = Math.floor(array.length/2)-1
+			} else {
+				middleIdx = Math.floor(array.length/2)
+			}
+
+			middleVal = array[middleIdx]
+			result.push(middleVal)
+		
+			console.log("middle: ", middleVal)
+			leftArray = array.slice(0,middleIdx)
+			rightArray = array.slice(middleIdx+1,array.length)
+
+			console.log("leftArr: ", leftArray)
+			console.log("rightArr: ", rightArray)
+
+			if(leftArray.length>0) {
+				createFinalArray(leftArray, result)
+			}
+
+			if(rightArray.length>0) {
+				createFinalArray(rightArray, result)
+			}
+	}
+	
+	return result
 }
