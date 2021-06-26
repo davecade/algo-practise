@@ -9,28 +9,25 @@ class LinkedList {
     }
 
     append(value) {
-        let pointer = this.head
-
-        while(pointer.next !== null) {
-            pointer = pointer.next
-        }
-
-        pointer.next = {
+        const newNode = {
             value: value,
             next: null
         }
-        this.tail = pointer.next
+        let pointer = this.tail
+
+        pointer.next = newNode
+        this.tail = newNode
         this.length++
     }
 
     prepend(value) {
-        let pointer = {
+        const newNode = {
             value: value,
             next: null
         }
 
-        pointer.next = this.head
-        this.head = pointer
+        newNode.next = this.head
+        this.head = newNode
         this.length++
     }
 }
