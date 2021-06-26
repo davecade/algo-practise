@@ -7,7 +7,22 @@ class BST {
     }
   }
   
-  function findKthLargestValueInBst(tree, k) {
+  function findKthLargestValueInBst(tree, k, list=[]) {
     // Write your code here.
-    return -1;
+      
+      if(tree.left===null && tree.right===null) {
+          list.push(tree.value)
+      } else {
+          
+          if(tree.left) {
+              findKthLargestValueInBst(tree.left, k, list)
+          }
+          list.push(tree.value)
+          if(tree.right) {
+              findKthLargestValueInBst(tree.right, k, list)
+          }
+      }
+      
+      console.log(list)
+    return list[(list.length)-k];
   }
