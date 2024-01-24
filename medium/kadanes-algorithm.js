@@ -26,9 +26,6 @@ function kadanesAlgorithm(array) {
   return highestNum;
 }
 
-// Do not edit the line below.
-exports.kadanesAlgorithm = kadanesAlgorithm;
-
 console.log(
   "RESULT > ",
   kadanesAlgorithm([-1, -2, -3, -4, -5, -6, -7, -8, -9, -10])
