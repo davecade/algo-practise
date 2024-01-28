@@ -14,7 +14,6 @@ function kadanesAlgorithm(array) {
   while (copyArray.length > 0) {
     for (let i = 0; i < copyArray.length; i++) {
       if (tally > highestNum) {
-        console.log("HIGHEST > ", tally);
         highestNum = tally;
       }
       tally = tally - copyArray[i];
